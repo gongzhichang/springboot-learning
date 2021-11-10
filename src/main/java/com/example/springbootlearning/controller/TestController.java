@@ -25,4 +25,13 @@ public class TestController {
     public String hello() {
         return "Hello, SpringBoot!";
     }
+
+    /**
+     * 错误
+     */
+    @GetMapping("/error")
+    @ResponseBody
+    public void error() {
+        int i = 1/0;
+    }
 }
