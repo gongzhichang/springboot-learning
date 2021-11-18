@@ -34,4 +34,12 @@ public class TestController {
     public void error() {
         int i = 1/0;
     }
+
+    /**
+     * 页面
+     */
+    @RequestMapping("/page")
+    public String page() {
+        return "test";
+    }
 }

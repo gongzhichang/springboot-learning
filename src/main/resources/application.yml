@@ -3,5 +3,13 @@ server:
 
 spring:
   profiles:
-    # 选择环境
-    active: @activatedProperties@
+    active: @activatedProperties@ # 选择环境
+  thymeleaf:
+    #prefix：指定模板所在的目录
+    prefix: classpath:/templates/
+    #suffix 配置模板后缀名
+    suffix: .html
+    #check-tempate-location: 检查模板路径是否存在
+    check-template-location: true
+    encoding: UTF-8
+    mode: HTML5

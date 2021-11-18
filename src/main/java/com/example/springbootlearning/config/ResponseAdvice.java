@@ -45,7 +45,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   ServerHttpRequest request, ServerHttpResponse response) {
         if(body instanceof String){
-            return objectMapper.writeValueAsString(ResultData.success(body));
+            return body;
         }
         if(body instanceof ResultData){
             return body;
