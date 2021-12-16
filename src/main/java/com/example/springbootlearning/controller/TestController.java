@@ -1,9 +1,15 @@
 package com.example.springbootlearning.controller;
 
+import com.example.springbootlearning.common.annotations.ModelView;
+import com.example.springbootlearning.common.api.ResultCode;
+import com.example.springbootlearning.common.api.ResultData;
+import com.example.springbootlearning.common.exception.CustomException;
+import com.example.springbootlearning.entity.sys.TestValidator;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 /**
  * 测试控制器
@@ -32,14 +38,29 @@ public class TestController {
     @GetMapping("/error")
     @ResponseBody
     public void error() {
-        int i = 1/0;
+        try {
+            int i = 1/0;
+        } catch (Exception e) {
+            throw new CustomException(ResultCode.USER_INPUT_ERROR, "自定义异常");
+        }
+
     }
 
     /**
-     * 页面
+     * 页面请求
      */
-    @RequestMapping("/page")
+    @GetMapping("/page")
+    @ModelView
     public String page() {
-        return "test";
+        int i = 1/0;
+        return "/test";
+    }
+
+    /**
+     * 测试参数验证
+     */
+    @PostMapping("/vali")
+    public ResultData<String> testVal(@Valid @RequestBody TestValidator testValidator) {
+        return ResultData.success();
     }
 }

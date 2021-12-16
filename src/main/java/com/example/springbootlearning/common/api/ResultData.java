@@ -1,5 +1,6 @@
 package com.example.springbootlearning.common.api;
 
+import com.example.springbootlearning.common.exception.CustomException;
 import lombok.Data;
 
 /**
@@ -12,19 +13,19 @@ import lombok.Data;
 public class ResultData<T> {
 
     /**
-     * 状态码
+     * 请求是否处理成功
      */
-    private long status;
+    private boolean isOK;
     /**
-     * 消息
-     *
-     * @see String
+     * 请求响应状态码
+     */
+    private int code;
+    /**
+     * 请求结果描述信息
      */
     private String message;
     /**
-     * 数据
-     *
-     * @see T
+     * 请求结果数据（通常用于查询操作）
      */
     private T data;
     /**
@@ -36,81 +37,69 @@ public class ResultData<T> {
         this.timestamp = System.currentTimeMillis();
     }
 
-    public ResultData(long status, String message, T data) {
-        this.status = status;
+    public ResultData(Boolean isOK, int code, String message, T data) {
+        this.isOK = isOK;
+        this.code = code;
         this.message = message;
         this.data = data;
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    public ResultData(Boolean isOK, int code, String message) {
+        this.isOK = isOK;
+        this.code = code;
+        this.message = message;
         this.timestamp = System.currentTimeMillis();
     }
 
     /**
      * 成功返回结果
      *
-     * @param data 获取的数据
+     * @return {@link ResultData}<{@link T}>
      */
-    public static <T> ResultData<T> success(T data) {
-        return new ResultData<T>(ResultCodeI.SUCCESS.getCode(), ResultCodeI.SUCCESS.getMessage(), data);
+    public static <T> ResultData<T> success() {
+        return new ResultData<T>(Boolean.TRUE, ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), null);
     }
 
     /**
      * 成功返回结果
      *
      * @param data 获取的数据
-     * @param  message 提示信息
+     * @return {@link ResultData}<{@link T}>
+     */
+    public static <T> ResultData<T> success(T data) {
+        return new ResultData<T>(Boolean.TRUE, ResultCode.SUCCESS.getCode(), ResultCode.SUCCESS.getMessage(), data);
+    }
+
+    /**
+     * 成功返回结果
+     *
+     * @param data    获取的数据
+     * @param message 提示信息
+     * @return {@link ResultData}<{@link T}>
      */
     public static <T> ResultData<T> success(T data, String message) {
-        return new ResultData<T>(ResultCodeI.SUCCESS.getCode(), message, data);
+        return new ResultData<T>(Boolean.TRUE, ResultCode.SUCCESS.getCode(), message, data);
     }
 
     /**
-     * 失败返回结果
-     * @param errorCode 错误码
+     * 错误返回结果
+     *
+     * @param e e
+     * @return {@link ResultData}<{@link T}>
      */
-    public static <T> ResultData<T> failed(IErrorCode errorCode) {
-        return new ResultData<T>(errorCode.getCode(), errorCode.getMessage(), null);
+    public static <T> ResultData<T> error(CustomException e) {
+        return new ResultData<T>(Boolean.FALSE, e.getCode(), e.getMessage());
     }
 
     /**
-     * 失败返回结果
-     * @param message 提示信息
+     * 错误返回结果
+     *
+     * @param iErrorCode   我的错误代码
+     * @param errorMessage 错误消息
+     * @return {@link ResultData}<{@link T}>
      */
-    public static <T> ResultData<T> failed(String message) {
-        return new ResultData<T>(ResultCodeI.FAILED.getCode(), message, null);
-    }
-
-    /**
-     * 失败返回结果
-     */
-    public static <T> ResultData<T> failed() {
-        return failed(ResultCodeI.FAILED);
-    }
-
-    /**
-     * 参数验证失败返回结果
-     */
-    public static <T> ResultData<T> validateFailed() {
-        return failed(ResultCodeI.VALIDATE_FAILED);
-    }
-
-    /**
-     * 参数验证失败返回结果
-     * @param message 提示信息
-     */
-    public static <T> ResultData<T> validateFailed(String message) {
-        return new ResultData<T>(ResultCodeI.VALIDATE_FAILED.getCode(), message, null);
-    }
-
-    /**
-     * 未登录返回结果
-     */
-    public static <T> ResultData<T> unauthorized(T data) {
-        return new ResultData<T>(ResultCodeI.UNAUTHORIZED.getCode(), ResultCodeI.UNAUTHORIZED.getMessage(), data);
-    }
-
-    /**
-     * 未授权返回结果
-     */
-    public static <T> ResultData<T> forbidden(T data) {
-        return new ResultData<T>(ResultCodeI.FORBIDDEN.getCode(), ResultCodeI.FORBIDDEN.getMessage(), data);
+    public static <T> ResultData<T> error(IErrorCode iErrorCode, String errorMessage) {
+        return new ResultData<T>(Boolean.FALSE, iErrorCode.getCode(), errorMessage);
     }
 }

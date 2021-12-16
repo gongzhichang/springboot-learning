@@ -13,7 +13,7 @@ public interface IErrorCode {
      *
      * @return long
      */
-    long getCode();
+    int getCode();
 
     /**
      * 获取消息
