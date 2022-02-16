@@ -36,6 +36,7 @@ public class CustomException extends RuntimeException {
         return code;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }

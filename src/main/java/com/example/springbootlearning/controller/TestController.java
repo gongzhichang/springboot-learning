@@ -6,6 +6,7 @@ import com.example.springbootlearning.common.api.ResultData;
 import com.example.springbootlearning.common.exception.CustomException;
 import com.example.springbootlearning.entity.sys.TestValidator;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -60,7 +61,12 @@ public class TestController {
      * 测试参数验证
      */
     @PostMapping("/vali")
-    public ResultData<String> testVal(@Valid @RequestBody TestValidator testValidator) {
+    public ResultData<String> testVal(@Validated @RequestBody TestValidator testValidator) {
         return ResultData.success();
+    }
+
+    @PostMapping("/name")
+    public String name(String name){
+        return name;
     }
 }

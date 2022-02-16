@@ -3,7 +3,14 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/learning
     username: root
-    password: root
+    password: 123456
+  devtools:
+    restart:
+      # 设置开起热部署
+      enabled: true
+      # 重启目录
+      additional-paths: src/main/java
+      exclude: WEB-INF/**
   thymeleaf:
     #cache: 是否缓存，开发模式下设置为false，避免改了模板还要重启服务器，线上设置为true，可以提高性能。
     cache: false
